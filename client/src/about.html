@@ -1,0 +1,53 @@
+<template>
+	<div class="about center">
+		<div class="card" if.bind="currentUser.role == 'teacher'">
+			<p class="card-content bold_text">Study Materials for the Class can be uploaded or alternated here</p>
+			<div class="card-action">	
+				<a class="modal-trigger waves-effect waves-light btn" href="#upload">Upload</a>
+			</div>
+		</div>
+		<form id="upload" submit.trigger="uploadFile()" validation-errors.bind="validationMessages" class="center modal" novalidate>
+			<div class="input-field left-align">
+				<input type="text" name="fileHead" id="fileHead" value.bind="fileHead & validate" autocomplete="off">
+				<label for="fileHead">Name of the file</label>
+				<p class="has-error" repeat.for="errorInfo of validationMessages">	
+					<span if.bind="errorInfo.error.propertyName=='fileHead'">${errorInfo.error.message}</span>
+				</p> 								 
+			</div>
+		    <div class="file-field input-field">
+			    <div class="btn">
+				    <span>File</span>
+				    <input type="file" multiple files.bind="selectedFiles" accept='image/png,image/jpg,image/jpeg,audio/*,video/*,.docx,.pdf,.pptx,.xlsx'>
+			    </div>
+				<div class="file-path-wrapper">
+				  	<input class="file-path" type="text" name="fileName" value.bind="fileName & validate">
+				</div>
+				<p class="has-error" repeat.for="errorInfo of validationMessages">	
+					<span if.bind="errorInfo.error.propertyName=='fileName'">${errorInfo.error.message}</span>
+				</p> 
+			</div>
+		    <div class="input-field">
+		    	<label for="description">Description</label>
+			    <textarea type="text" name="description" id="description" class="materialize-textarea" value.bind="description"></textarea>			 
+		    </div>
+		    <div class="center">
+				<button type="submit" class="waves-effect btn waves-light modal-action modal-close">Upload</button>
+				<button class="waves-effect waves-light btn modal-action modal-close">Cancel</button>
+			</div>
+		</form>		
+	</div>
+	<ul class="collapsible about col l6" data-collapsible="accordion" repeat.for="material of materials">
+		<li>
+			<div class="collapsible-header">
+				<i class="material-icons">photo_library</i> ${material.name}
+			</div>
+      		<div class="collapsible-body row">
+      			<a repeat.for="file of material.files">
+					<object data.bind="'./uploadfiles/'+file" class="files col l12 materialboxed" data-caption.bind="file.split('.')[0]">
+							<a href.bind="'./uploadfiles/'+file"></a>
+					</object> 
+				</a>			
+      		</div>
+		</li>
+	</ul>
+</template>

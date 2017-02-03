@@ -1,0 +1,25 @@
+{
+  "jspm": {
+    "dependencies": {
+      "aurelia-bootstrapper": "npm:aurelia-bootstrapper@^1.0.0",
+      "aurelia-fetch-client": "npm:aurelia-fetch-client@^1.0.1",
+      "aurelia-framework": "npm:aurelia-framework@^1.0.5",
+      "aurelia-materialize-css": "npm:aurelia-materialize-css@^0.1.0",
+      "aurelia-validation": "npm:aurelia-validation@^0.13.1",
+      "materialize": "npm:materialize@^1.0.0",
+      "materialize-css": "npm:materialize-css@^0.97.7",
+      "socket.io-client": "npm:socket.io-client@^1.5.1"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  },
+  "devDependencies": {
+    "jspm": "^0.16.46"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2"
+  }
+}

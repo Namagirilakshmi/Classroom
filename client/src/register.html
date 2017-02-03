@@ -1,0 +1,118 @@
+<template>
+	<div class="banner">
+		<img src="src/images/brain.jpg">
+		<section class="register container row z-depth-3 grey lighten-3">
+			<form class="register col offset-l1 l10 s12" submit.trigger="register()" validation-errors.bind="validationMessages" novalidate>
+				<a href="" class="backToLogin" click.delegate="backToLogin()"><i class="material-icons medium black-text">reply</i></a>
+				<h3 class="center">Register Here</h3>
+				<div>
+				    <div class="input-field col l6 s12 ">
+				    	<i class="material-icons prefix">account_circle</i>
+				       	<input type="text" id="first_name"  name="first_name" value.bind="first_name & validate" >
+				        <label for="first_name">First Name</label>
+				        <p class="has-error" repeat.for="errorInfo of validationMessages">	
+					 		<span if.bind="errorInfo.error.propertyName=='first_name'">${errorInfo.error.message}</span>
+						</p>
+				    </div>
+				    <div class="input-field col l6 s12">
+				    	<i class="material-icons prefix">perm_identity</i>
+				        <input type="text" id="last_name" name="last_name" value.bind="last_name & validate">
+				        <label for="last_name">Last Name</label>
+				        <p class="has-error" repeat.for="errorInfo of validationMessages">
+					 		<span if.bind="errorInfo.error.propertyName=='last_name'">${errorInfo.error.message}</span>
+						</p>
+				    </div>
+				    <div class="input-field col s12">
+				    	<i class="material-icons prefix">email</i>
+				        <input type="email" id="email" name="email" value.bind="email & validate">
+				        <label for="email">Email-id</label>
+				         <p class="has-error" repeat.for="errorInfo of validationMessages">	
+					 		<span if.bind="errorInfo.error.propertyName=='email'">${errorInfo.error.message}</span>
+						</p>
+				    </div>
+				    <div class="input-field col s12">
+				    	<i class="material-icons prefix">lock_outline</i>
+				       	<input type="password" id="password" name="password" value.bind="password & validate" >
+				       	<label for="password">Password</label>
+				       	 <p class="has-error" repeat.for="errorInfo of validationMessages">
+					 		<span if.bind="errorInfo.error.propertyName=='password'">${errorInfo.error.message}</span>
+						</p>
+				    </div>
+			        <div class="input-field col s12">
+			        	<i class="material-icons prefix">lock</i>
+			        	<input type="password" id="confirm_password" name="confirm_password" value.bind="confirm_password & validate">
+			        	<label for="confirm_password">Confirm password</label>
+			        	<p class="has-error" repeat.for="errorInfo of validationMessages">	
+					 		<span if.bind="errorInfo.error.propertyName=='confirm_password'">${errorInfo.error.message}</span>
+						</p>
+			        </div>
+				    <div class="input-field col s12">
+				    	<i class="material-icons prefix">date_range</i>
+				       	<input type="text" id="dob" class="datepicker" name="dob" value.bind="dob & validate">
+				       	<label for="dob">DOB</label>
+				       	<p class="has-error dob" repeat.for="errorInfo of validationMessages">	
+				       		<span if.bind="errorInfo.error.propertyName=='dob'">${errorInfo.error.message}</span>
+						</p>
+				    </div>
+			        <div class="input-field col s12">
+			        	<i class="material-icons prefix">call</i>
+			        	<input type="text" id="phone" name="phone" value.bind="phone & validate">
+			        	<label for="phone">Contact Number</label>
+			        	<p class="has-error" repeat.for="errorInfo of validationMessages">
+					 		<span if.bind="errorInfo.error.propertyName=='phone'">${errorInfo.error.message}</span>
+						</p>
+			        </div>
+			        <div class="input-field col s12">
+			        	<i class="material-icons prefix">wc</i>
+			        	<label class="gender grey-text">Gender</label>
+			        	<div id="gender">
+				        	<span>
+						      <input name="gender" type="radio" id="male" value="male" checked.bind="gender & validate"/>
+						      <label for="male">Male</label>						      
+						    </span>
+						    <span>
+						      <input name="gender" type="radio" id="female" value="female" checked.bind="gender"/>
+							  <label for="female">Female</label>							  
+							</span>
+							<p class="has-error error_msg" repeat.for="errorInfo of validationMessages">
+						    	<span if.bind="errorInfo.error.propertyName=='gender'">${errorInfo.error.message}</span>
+							</p>
+						</div>
+						
+				    </div>
+				    <div class="input-field col s12">
+				    	<i class="material-icons prefix">business_center</i>
+				    	<label class="role grey-text">Role</label>
+				        <div id="role">
+					        <span>
+							    <input name="student" type="radio" id="student" value="student" checked.bind="role & validate"/>
+							    <label for="student">Student</label>							    
+							</span>
+							<span>
+							    <input name="teacher" type="radio" id="teacher" value="teacher" checked.bind="role"/>
+							    <label for="teacher">Teacher</label>							    
+							</span>
+							<p class="has-error error_msg" repeat.for="errorInfo of validationMessages">
+								<span if.bind="errorInfo.error.propertyName=='role'">${errorInfo.error.message}</span>
+							</p>
+						</div>
+				    </div>
+				    <div class="input-field col s12">
+				      	<div>
+						    <input type="checkbox" id="agree" name="terms" value="terms" checked.bind="terms & validate"/>
+	     					<label for="agree">I agree the terms and conditions</label>
+	     					<p class="has-error error_msg" repeat.for="errorInfo of validationMessages">
+	     						<span if.bind="errorInfo.error.propertyName=='terms'">${errorInfo.error.message}</span>
+							</p>
+						</div>
+				    </div>
+				    <div class="input-field col s12 center">
+				        <button class="btn waves-effect waves-light" type="submit">Submit
+						   <i class="material-icons right">send</i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</section>
+	</div>
+</template>

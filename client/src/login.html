@@ -1,0 +1,35 @@
+<template>
+	<div class="banner">
+		<img src="src/images/brain.jpg">
+		<section class="login container center row z-depth-3 grey lighten-3">
+			<h3>WELCOME</h3>
+			<p class="col l10 offset-l1 s10 offset-s1">Helps in enhancing your knowledge by sharing</p>
+			<form submit.trigger="login()" validation-errors.bind="validationMessages" class="col l10 offset-l1 s10 offset-s1 left-align" novalidate>
+				<div class="input-field">
+					<i class="material-icons prefix">account_circle</i>
+					 <input type="email" id="email" name="email" value.bind="email & validate" autocomplete="off">
+					 <label for="email">Username</label>	
+					 <p class="has-error" repeat.for="errorInfo of validationMessages">	
+					 	<span if.bind="errorInfo.error.propertyName=='email'">${errorInfo.error.message}</span>
+					</p> 								 
+				</div>				
+				<div class="input-field">
+					<i class="material-icons prefix">vpn_key</i>
+					<input type="password" id="password" name="password" value.bind="password & validate" autocomplete="off">
+					<label for="password">Password</label>
+					<p class="has-error" repeat.for="errorInfo of validationMessages">
+					  <span if.bind="errorInfo.error.propertyName=='password'">${errorInfo.error.message}</span>
+					</p> 						
+				</div>
+				<p class="center has-error" id="db_error"></p>
+				<div class="center">
+					<button type="submit" class="waves-effect waves-light btn">Sign In</button>
+				</div>
+			</form>
+			<div class="register col s10 offset-s1">
+				<span>For new Users, Please </span>
+				<a route-href="route:register" class="waves-effect waves-light btn-flat red-text">Register here!</a>
+			</div>
+		</section>
+	</div>
+</template>

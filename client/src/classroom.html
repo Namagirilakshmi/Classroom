@@ -1,0 +1,336 @@
+<template>
+    <require from="./mini-date"></require>
+    <require from="./topHead"></require>
+    <require from="./about"></require>
+    <require from="./search-format"></require>
+    <header class="classHeader">
+        <!-- slider out div -->       
+        <ul id="slide-out" class="side-nav">
+            <li><a>${currentUser.email}</a>
+            </li>
+            <li class="divider"></li>
+            <li repeat.for="subject of subjectList">
+                <a route-href="route:classroom;params.bind: {subjectCode:subject.subjectCode}">${subject.subjectName}</a>
+            </li>            
+        </ul>
+        <top-head> </top-head>
+        <div class="class-detail center white-text">
+            <h2 class="class-name">${currentSubject.subjectName}</h2>
+            <p class="section-name">${currentSubject.sectionName}</p>
+            <p class="teacher-name" show.bind="currentUser.role == 'student'">${currentSubject.handledBy.name}</p>
+        </div>
+    </header>
+    <!-- nav bar -->
+    <div class="row black">
+        <div class="col offset-l3 l6 offset-s2 s8 offset-m3 m6">
+            <ul class="tabs black">
+                <li class="tab col s3"><a class="active" href="#stream">Stream</a>
+                </li>
+                <li class="tab col s3" if.bind="currentUser.role == 'teacher'"><a class="" href="#detail">Students</a>
+                </li>
+                <li class="tab col s3" if.bind="currentUser.role == 'student'"><a class="" href="#detail">Classmates</a>
+                </li>
+                <li class="tab col s3"><a class="" href="#about">Study Materials</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- main page content -->
+    <div class="container row">
+        <!-- stream part -->
+        <div id="stream" class="col offset-l2 l8 s12">
+            <form class="newpost-form">
+                <div class="newpost-container ${isAnnouce? 'annouce' : ''}">
+                    <div class="intial-field" hide.bind="showContainer">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" name="" click.trigger="showContainer=true">
+                                <label>Share something</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="annouce-type-post" show.bind="isAnnouce && showContainer">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="newpost-textarea" class="materialize-textarea newpost-textarea" value.bind="postContent"></textarea>
+                                <label for="newpost">Share something here</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <a class="btn btn-flat left teal lighten-2" click.delegate="postAnnouncement()">Post</a>
+                                <a class="btn cancel-button btn-flat left" click.trigger="showContainer=false">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="assign-type-post" hide.bind="isAnnouce || !showContainer">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="newpost-title" class="" type="text" value.bind="title"></input>
+                                <label for="newpost-title">Title</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="newpost-description" class="materialize-textarea" value.bind="description"></textarea>
+                                <label for="newpost-description">Description</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="date" id="due-date" class="datepicker" value.bind="duedate">
+                                <label for="due-date">Due date</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="submit" class="btn btn-flat right teal lighten-2" value="Assign" click.trigger="postAssignment()">
+                                <a class="btn cancel-button btn-flat right" click.trigger="showContainer=false">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" if.bind="currentUser.role == 'teacher'">
+                    <div class="col s12">
+                        <div class="input-field left radio-buttons">
+                            <input name="posttype" type="radio" id="annouce" value="annouce" click.trigger="isAnnouce = true" change.trigger="showContainer = true" />
+                            <label for="annouce">Annoucement</label>
+                            <input name="posttype" type="radio" id="assign" value="assign" click.trigger="isAnnouce =false" change.trigger="showContainer = true" />
+                            <label for="assign">Assignment</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="posts" repeat.for="post of posts">
+                <!-- if post type is annouce -->
+                <div class="row" if.bind="post.type=='annouce'">
+                    <div class="col s12 m12 l12">
+                        <div class="card">
+                            <div class="card-content black-text">
+                                <span class="card-title grey-text text-lighten-2">Announcement</span>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p class="assign-title">${post.content}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action teal lighten-5">
+                                <form class="comment-form" submit.delegate="$parent.addComment($index,post)">
+                                    <input type="text" placeholder="Add a Comment..." value.bind="post.userComment">
+                                    <input type="submit" class="btn" value="Send">
+                                </form>
+                                <ul class="collapsible comment-accordion" data-collapsible="accordion">
+                                    <li>
+                                        <div class="collapsible-header"><a class="right" style="line-height: 36px">Show comments</a>
+                                        </div>
+                                        <div class="comments collapsible-body" style="padding-top: 20px;">
+                                            <div class="comment row" repeat.for="comment of post.comments">
+                                                <span class="col s12" style="font-size: 1.4rem">${comment.by.name}</span>
+                                                <span class="col s12 grey-text" style="font-size: 1rem;line-height: 1.3rem;">${comment.content}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- if post type is user post -->
+                <div class="row" if.bind="post.type=='userpost'">
+                    <div class="col s12 m12 l12">
+                        <div class="card">
+                            <div class="card-content black-text">
+                                <span class="card-title grey-text text-lighten-2">${post.by.email == currentUser.email? 'ME' : post.by.name}</span>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p class="assign-title">${post.content}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action teal lighten-5">
+                                <form class="comment-form" submit.delegate="$parent.addComment($index,post)">
+                                    <input type="text" placeholder="Add a Comment..." value.bind="post.userComment">
+                                    <input type="submit" class="btn" value="Send">
+                                </form>
+                                <ul class="collapsible comment-accordion" data-collapsible="accordion">
+                                    <li>
+                                        <div class="collapsible-header"><a href="" class="right" style="line-height: 36px">Show comments</a>
+                                        </div>
+                                        <div class="comments collapsible-body" style="padding-top: 20px;">
+                                            <div class="comment row" repeat.for="comment of post.comments">
+                                                <span class="col s12" style="font-size: 1.4rem">${comment.by.name}</span>
+                                                <span class="col s12 grey-text" style="font-size: 1rem;line-height: 1.3rem;">${comment.content}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- if post type is assign -->
+                <div class="row" if.bind="post.type == 'assign'">
+                    <div class="col s12 m12 l12">
+                        <div class="card">
+                            <div class="card-content black-text">
+                                <div class="row">
+                                    <span class="col s9 card-title grey-text text-lighten-2" >Assignment</span>
+                                    <span class="col s3 grey-text text-lighten-2 submit-date">Due: <span>${post.duedate | miniDate}</span></span>
+                                </div>
+                                <div class="row" >
+                                    <div class="col s8">
+                                        <p class="assign-title">${post.title}</p>
+                                        <p>${post.description}</p>
+                                    </div>
+                                    <div class="assign-done col s4">
+                                        <div class="read-count">
+                                            <p class="turned">${post.turnedIn}</p>
+                                            <p>TURNED IN</p>
+                                        </div>
+                                        <div class="read-count">
+                                            <p class="turned">${post.notTurnedIn}</p>
+                                            <p>NOT TURNED IN</p>
+                                        </div>
+                                    </div>                         
+                                </div>
+                                <a route-href="route:assignment;params.bind: {assignmentId:post.assignmentId}">View</a>
+                            </div>
+                            <div class="card-action teal lighten-5">
+                              <form class="comment-form" submit.delegate="$parent.addComment($index,post)">
+                                    <input type="text" placeholder="Add a Comment..." value.bind="post.userComment">
+                                    <input type="submit" class="btn" value="Send">
+                                </form>
+                                <ul class="collapsible comment-accordion" data-collapsible="accordion">
+                                    <li>
+                                        <div class="collapsible-header"><a href="" class="right" style="line-height: 36px">Show comments</a>
+                                        </div>
+                                        <div class="comments collapsible-body" style="padding-top: 20px;">
+                                            <div class="comment row" repeat.for="comment of post.comments">
+                                                <span class="col s12" style="font-size: 1.4rem">${comment.by.name}</span>
+                                                <span class="col s12 grey-text" style="font-size: 1rem;line-height: 1.3rem;">${comment.content}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="detail" class="col offset-l2 l8 s12 center">
+            <!-- invitation for students to join class -->
+            <div class="col s12 m7 l12 invite_student" if.bind="currentUser.role == 'teacher'">
+                <div class="card horizontal">
+                    <div class="card-image">
+                        <img src="src/images/invite.png">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content valign-wrapper">
+                            <p class="valign ">Add Students or give them this code to join: <span class="bold_text">${currentSubject.subjectCode}</span></p>  
+                        </div>
+                        <div class="card-action">
+                            <a href="#studentsList" id="add-students" class="btn btn-flat blue white-text modal-trigger">Add</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Students Details -->
+            <div class="col s12 m7 l12 studentDetail">
+                <div class="">
+                    <h5 if.bind="currentUser.role == 'teacher'">Students Details</h5>
+                    <h5 if.bind="currentUser.role == 'student'">Classmates Details</h5>
+                    <form class="col  offset-l6 l6 s12 m6"  if.bind="currentSubject.students.length!=0 && currentUser.role == 'teacher'">
+                        <div class="input-field">
+                            <i class="material-icons prefix">search</i>
+                            <input type="text" value.bind="searchStudent">
+                        </div>
+                    </form>
+                     <form class="col  offset-l6 l6 s12 m6" if.bind="currentSubject.students.length>1 && currentUser.role == 'student'">
+                        <div class="input-field">
+                            <i class="material-icons prefix">search</i>
+                            <input type="text" value.bind="searchStudent">
+                        </div>
+                    </form>
+                    <table class="responsive-table highlight" if.bind="currentSubject.students.length!=0">
+                        <thead>
+                            <tr>
+                                <th data-field="name">Name</th>
+                                <th data-field="mail">Email Id</th>
+                            </tr>
+                        </thead>
+                        <tbody  ref="myDiv" items.bind="currentSubject.students | filter : searchStudent">
+                            <tr repeat.for="student of myDiv.items " if.bind="student.email!=currentUser.email">
+                                <td>${student.name}</td>
+                                <td>${student.email}</td>
+                                <td if.bind="currentUser.role == 'teacher'"><a href="#removeStudent" class="modal-trigger" click.trigger="getDetail(student)"><i class="material-icons grey-text text-darken-2">remove_circle_outline</i></a></td>                               
+                            </tr>
+                            <tr class="no-more" if.bind="myDiv.items.length==0">
+                                <td colspan="2">No Matches Found!</td>
+                            </tr>
+                        </tbody>
+                    </table>    
+                </div>
+                <div class="no-more" if.bind="currentSubject.students.length==0">No People Found</div>
+                <div class="no-more" if.bind="currentSubject.students.length==1 && currentUser.role == 'student'">No Classmates Found</div>
+            </div>
+        </div>
+        <!-- modal for removing student -->
+        <div id="removeStudent" class="modal">
+            <div class="modal-content center">
+                <p>Are you sure to remove ${studentDetail.name} from this class?</p>
+                <a href="#!" class=" waves-effect cyan btn-flat waves-light modal-close">Cancel</a>
+                <a href="#!" click.trigger="removeStudent(studentDetail)" class="modal-action modal-close cyan waves-effect btn-flat waves-light">Yes</a>
+            </div>
+        </div>
+        <!-- modal for inviting students to the class by teacher -->
+        <div id="studentsList" class="modal" >
+            <div>
+                <div class="modal-content">
+                    <i class="material-icons black-text small right modal-action modal-close">close</i> 
+                    <h5>Select Students to Add</h5>
+                    <div class="divider"></div>  
+                    <div if.bind="freeStudents.length==0">
+                        <p class="no-more">No people found!</p>
+                    </div>                           
+                    <div class="z-depth-1" if.bind="freeStudents.length!=0">
+                        <form class="col  offset-l6 l6 s12 m6">
+                            <div class="input-field">
+                                <i class="material-icons prefix">search</i>
+                                <input type="text" value.bind="search">
+                            </div>
+                        </form>                        
+                        <ul ref="freeDiv" items.bind="freeStudents | filter : search" class="row detail-list" id="detail-list">
+                            <li class="detail-list" if.bind="freeDiv.items.length!=0">
+                                <input type="checkbox" id="selectAll" checked.bind="isAllChecked" change.delegate="checkAll()" >
+                                <label for="selectAll" class="black-text bold_text">Select All</label>
+                            </li>
+                            <li repeat.for="student of freeDiv.items" class="col l12">
+                                <div class="divider"></div>
+                                <div class="row valign-wrapper">
+                                    <input type="checkbox" id.bind="student.email" name="student" class="students" model.bind="student" checked.bind="student.checked & validate" change.delegate="clearingCheck(student)">
+                                    <label for.bind="student.email" class="black-text col offset-l1 l11">
+                                        <span class="col offset-l1 l5 valign">${student.name}</span>
+                                        <span class="col l6 valign">${student.email}</span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="no-more" if.bind="freeDiv.items.length==0">
+                                    No Matches Found!
+                            </li>
+                        </ul>                
+                    </div>                
+                </div>           
+                <div class="modal-footer">
+                    <span if.bind="selectedStudents.length==0">Please select a student to add...</span>
+                    <a href="#!" class.bind="selectedStudents.length==0 ? 'disabled':'blue white-text'" click.trigger="addStudent()" class="waves-effect waves-green btn-flat">Add</a>
+                    <a href="#!" class=" waves-effect btn-flat waves-light modal-action modal-close">Cancel</a>
+                </div>
+            </div>
+        </div>
+        <!-- about tab part -->
+        <div id="about" class="col offset-l2 l8 s12">
+           <about></about>
+        </div>
+    </div>
+</template>

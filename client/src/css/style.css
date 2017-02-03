@@ -1,0 +1,262 @@
+/*banner */
+.banner img{
+	width: 100%;
+	height: 55vh;
+	position: relative;
+}
+/*login*/
+.login.container .register{
+	padding-top: 20px;
+}
+/*register*/
+.container.login{
+	width: 40%;
+	padding: 20px;
+	position: absolute;
+	top: 35%;
+	left: 30%;
+}
+.container.register{
+	width: 60%;
+	padding: 20px;
+	position: absolute;
+	top: 35%;
+	left: 20%;
+}
+#gender span label,#role span label{
+	width: 30%;
+}
+.picker__date-display,.picker__today,.picker__clear{
+	display: none;
+}
+.picker_footer{
+	text-align: center;
+}
+.has-error{
+	color: #ef5350;
+	font-size: 12px;
+	text-align: right;
+}
+#role,#gender{
+	padding: 30px 0;
+}
+.backToLogin{
+	float: right;
+}
+/*home page*/
+.card-view{   
+	padding-bottom: 10px;
+}
+.card-text{
+	padding: 10px;
+	min-height: 200px;
+	background-size: cover;
+	background-position: center;
+}
+.bottom-text{
+	position: absolute;
+	bottom: 10px;
+	font-size: 16px;
+}
+.assign{
+	padding: 10px 0px 30px 0px;
+}
+.card-top{
+	position: relative;
+}
+.card-top .menu{
+	position: absolute;
+	top: 35px;
+	right: 10px;
+}
+.card-top i:hover{
+ cursor: pointer;
+}
+/*media queries*/
+@media only screen and (max-width: 600px) {
+	.container.register,.container.login{
+		width: 90%;
+		padding:0 0 15px 0;
+		left: 5%;
+	}
+	#gender span label,#role span label{
+		width: 40%;
+	}
+}
+@media only screen and (min-width: 993px) {
+    .modal {
+        width: 30%;
+    }
+}
+/*header styles*/
+body{
+    background-color: #eee;
+}
+header,.classHeader{
+    min-height: 300px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.classHeader{
+	background-image: url("../images/img1.png");
+
+}
+nav{
+    box-shadow: none;
+}
+.home-page{
+    font-size: 30px;
+}
+.tabs .indicator{
+	height: 4px !important;
+}
+/*post part*/
+.posts .row{
+	border-radius: 10px;
+}
+.newpost-container:after,.newpost-container:before{
+    content: "";
+    position: absolute;
+    border: 1.2rem solid;
+    bottom: -2.3rem;
+    left:13rem;
+    border-color: #fff transparent transparent transparent;
+    transition: 0.2s left ease-out;
+}
+.newpost-container:before{
+    bottom: -2.6rem;
+    border: 1.3rem solid;
+    left: 13rem;
+    border-color: #9e9e9e transparent transparent transparent;   
+}
+.newpost-container.annouce:after , .newpost-container.annouce:before{
+    left: 5rem;
+}
+.newpost-form{
+	margin-bottom: 20px;
+}
+.newpost-form input[type="radio"]:not(:checked)+label:before,.newpost-form input[type="radio"]:checked+label:after{
+    display: none;
+}
+.newpost-container{
+    background-color: #fff;
+    padding: 5px 10px;
+    box-shadow: 0 2px 1px 0px #9e9e9e ;
+    position: relative;
+    border-radius: 10px;
+}
+.newpost-container .row,.newpost-container .assign-post-type input{
+    margin-bottom: 0px;
+}
+.newpost-container .intial-field input{
+    border: 0px;
+}
+/*assignment styles*/
+.assign-title{
+    line-height: 1.5rem;
+}
+.assign-done{
+   text-align:center;
+   font-size: 15px;
+    border-left:1px dotted;
+}
+.read-count{
+    padding:5px 0;
+}
+.submit-date{
+    line-height: 48px;
+}
+.turned{
+    font-size: 20px;
+    padding: 5px 0;
+}
+.read-count p:nth-child(2){
+    font-size: 12px;
+}
+.comment-accordion.collapsible{
+	box-shadow: none;
+	border: 0px;
+}
+.comment-accordion .collapsible-header{
+	background: transparent;
+	border: 0px;
+}
+.comment-accordion .collapsible-body{
+	border: 0px;
+}
+
+/**********************************/
+.head-title{
+    font-size: 1.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.tab-prop ul.tabs{
+    margin-top:  16px;
+}
+input[placeholder] {
+   border: 1px solid green; 
+}
+ input::-webkit-input-placeholder{
+     color:green;
+}
+/*adding styles*/
+.invite_student,.studentDetail,.about.card,.about{
+	background-color: #fff;
+    padding: 5px 10px;
+    box-shadow: 0 2px 1px 0px #9e9e9e ;    
+    border-radius: 10px;
+    margin: 5px 0;
+}
+.bold_text,.about.card .card-title{
+	font-weight: bold;
+}
+.card.horizontal,.about .card{
+	box-shadow: unset !important;
+}
+.modal{
+	/*box-sizing: border-box;*/
+	overflow: hidden;
+}
+#studentsList .input-field .prefix ~ input{
+	margin-left: 0px;
+	padding-left: 50px;
+}
+#studentsList .input-field .prefix {
+	margin: 4px;
+}
+#studentsList .input-field input[type=search]:focus{
+	background-color: transparent;
+}
+#studentsList form .input-field input:focus{
+	outline: unset;
+}
+.detail-list{
+	padding:0 20px ;
+}
+.detail-list li div:nth-child(2){
+	padding: 10px;
+	margin-bottom: 0;
+}
+/*remove student modal*/
+#removeStudent p{
+	font-size: 20px;
+	padding: 20px;
+}
+/*about tab styles*/
+.about form,.no-more{
+	padding: 15px;
+}
+.about form p{
+	padding: 5px;
+}
+.files{
+	margin: 10px 0px;
+	/*width: 200px;
+	height: 100px;*/
+}
+.about.card .desc{
+	font-size: 15px;
+	text-align: justify;
+}

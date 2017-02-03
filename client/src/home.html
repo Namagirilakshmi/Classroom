@@ -1,0 +1,82 @@
+<template>
+	<require from="./topHead"></require>
+	<top-head> </top-head>
+  	<!-- cards -->
+  	<div class="row">
+  		<div class="col s12 m6 l4" repeat.for="subject of subjectList">
+	  		<div class="card card-view">
+			    <div class="card-image card-top">
+			      <div class="card-text" style="background-image: url(src/images/img3.png)">
+				      <h4 class="white-text">${subject.subjectName}</h4>
+				      <span class="white-text">${subject.sectionName}</span>
+				      <span class="bottom-text white-text" if.bind="currentUser.role == 'student'">${subject.handledBy.name}</span>
+				      <span class="bottom-text white-text" if.bind="currentUser.role == 'teacher'">${subject.students.length + " students"}</span>
+			      </div>
+			      <div class="menu">
+				   	<a class="dropdown-button" data-activates.bind="subject.subjectCode"  data-beloworigin="true" data-alignment="right"><i class="material-icons white-text">more_vert</i></a>
+					   	<ul id.bind="subject.subjectCode" if.bind="currentUser.role == 'teacher'" class="dropdown-content">
+					   		<li><a>Rename</a></li>
+					   		<li><a click.delegate="deleteSubject(subject)">Delete</a></li>
+					   	</ul>
+					   	<ul id.bind="subject.subjectCode" if.bind="currentUser.role == 'student'" class="dropdown-content">
+					   		<li><a click.delegate="leaveSubject(subject)">Leave</a></li>
+					   	</ul>
+					</div>   
+			     </div>
+			    <div class="card-content">
+			      <p><a href="#">Upcoming Assignments</a></p>
+			      <p class="assign">No assignments</p>
+			      <a route-href="route:classroom;params.bind: {subjectCode:subject.subjectCode}"><i class="material-icons right">folder</i></a>
+			    </div>
+		  	</div>
+	  	</div>
+	</div>
+	 <!--modal-->
+    <div id="modal1" class="modal" if.bind="currentUser.role == 'teacher'">
+    	<div class="modal-content">
+    		<div class="row">
+	      		<form class="col s12"  validation-errors.bind="validationMessages" novalidate>
+	      			<div class="row">
+	      				<div class="input-field col s12">
+						    <input id="create-class" type="text" name="subjectName" value.bind="subjectName & validate" autocomplete="off">
+						    <label for="create-class">Subject Name</label>
+						    <p class="has-error" repeat.for="errorInfo of validationMessages">
+						    	<span if.bind="errorInfo.error.propertyName=='subjectName'">${errorInfo.error.message}</span>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12">
+						    <input id="section" type="text" name="sectionName" value.bind="sectionName & validate" autocomplete="off">
+						    <label for="section">Class Name</label>
+						    <p class="has-error" repeat.for="errorInfo of validationMessages">	
+						    	<span if.bind="errorInfo.error.propertyName=='sectionName'">${errorInfo.error.message}</span>
+							</p>
+						</div>	
+					</div> 
+					<button class="btn" click.delegate="createSubject()">CREATE</button> 
+					<button class="btn grey" click.delegate="closeDialog()">CANCEL</button>
+	      		</form>
+	      	</div>
+   		</div>
+	</div>  
+	<div id="modal1" class="modal" if.bind="currentUser.role == 'student'">
+    	<div class="modal-content">
+    		<div class="row">
+	      		<form class="col s12" validation-errors.bind="validationMessages" novalidate>
+	      			<div class="row">
+	      				<div class="input-field col s12">
+						    <input id="classcode" type="text" name="subjectCode" value.bind="subjectCode & validate" autocomplete="off">
+						    <label for="classcode">Subject Code</label>
+						    <p class="has-error" repeat.for="errorInfo of validationMessages">
+						    	<span if.bind="errorInfo.error.propertyName=='subjectCode'">${errorInfo.error.message}</span>
+							</p>
+						</div>
+					</div>
+					<button class="btn" click.delegate="joinSubject()">JOIN</button> 
+					<button class="btn grey" click.delegate="closeDialog()">CANCEL</button>   
+				</form>
+	      	</div>
+   		</div>
+	</div>               
+</template>

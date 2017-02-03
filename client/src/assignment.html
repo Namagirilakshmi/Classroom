@@ -1,0 +1,100 @@
+<template>
+      <header>
+        <ul id="dropdown1" class="dropdown-content dropdown-list">
+          <li><a href="#!">My profile</a></li>
+          <li class="divider"></li>
+          <li><a href="#!">Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="#!">Logout</a></li>
+        </ul>
+        
+        <nav class="light-green">
+          <div class="nav-wrapper row">
+           <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">arrow_back</i></a>
+            <span class="head-title col s2">${currentAssignment.title}</span>
+            <div class="tab-prop col s4" >
+                <ul class="tabs light-green" style="">
+                  <li class="tab"><a class="active" href="#">Assignment Details</a></li>
+                  <li class="tab" if.bind="currentUser.role == 'student'"><a class="" href="#" >My Assignments</a></li>
+                  <li class="tab" if.bind="currentUser.role == 'teacher'"><a class="" href="#" >Student Submissions</a></li>
+                </ul>
+            </div>
+
+              <ul class="right">
+                
+              <!-- Dropdown Trigger -->
+                <li><a class="dropdown-button" href="#!" data-activates="dropdown1">studteacherview@gmail.com<i class="material-icons right">arrow_drop_down</i></a></li>
+              </ul>
+          </div>
+        </nav>
+        
+        </header>
+        <!-- if user is student -->
+        <div class="container" if.bind="currentUser.role == 'student'">
+          <div class="row">
+            <p class="col s10" style="font-size: 1.5rem;line-height: 2rem">${currentAssignment.title}</p>
+            <span class="date col s2" style="line-height: 2rem">Due NOV 16</span>
+          </div>
+          <div class="row">
+            <div class="col s6">
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>File</span>
+                  <input type="file" multiple>
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                </div>
+              </div>
+            </div>
+            <div class="col s6">
+              <a class="waves-effect waves-light btn light-blue lighten-1 right">Turn in</a>
+              <span class="detail right btn btn-flat">NOT TURNED IN</span>
+            </div>
+         </div>
+          <div>
+            <h5 class="con">Conversation with Teacher</h5>
+             <!-- comments -->
+              <div class="comment row" repeat.for="comment of currentAssignment.record.comments">
+                  <span class="col s12" style="font-size: 1.4rem">${comment.by.name}</span>
+                  <span class="col s12 grey-text" style="font-size: 1.4rem">${comment.content}</span>
+              </div>
+            
+            <form submit.trigger="addComment()">
+              <div class="row">
+                <div class="input-field col s10">
+                    <input type="text" name="" placeholder="add a comment ........" value.bind="userComment">
+                </div>
+                <div class="input-field col s2">
+                  <input type="submit" class="btn right" value="Add" name="" style="margin-top: .5rem">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- if user is teacher -->
+        <div class="container" if.bind="currentUser.role == 'teacher'">
+          <p class="col s10" style="font-size: 1.5rem;line-height: 2rem">${currentAssignment.title}</p> 
+          <a class="waves-effect waves-light btn light-blue lighten-1">Return</a>
+          <table class="highlight">
+            <thead>
+              <td>
+                <input type="checkbox" id="all-students" >
+                <label for="all-students" class="black-text">Students</label>
+              </td>
+              <td>Status</td>
+              <td>Points</td>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="checkbox" id="each-student">
+                  <label for="each-student">Student name</label>
+                </td>
+                <td>Not turned in</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+</template>        
